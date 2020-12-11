@@ -1,2 +1,5 @@
-# webpack-react-practice
-我的练习
+# notes about node
+
+node 相关笔记
+
+
