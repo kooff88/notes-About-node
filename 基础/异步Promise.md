@@ -1,5 +1,7 @@
 ## Promise
 
+穿越了 事件循环 存在的function
+
 new Promise 对象, 异步操作非常好的 解决方案
 
 ```js
