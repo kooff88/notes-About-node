@@ -4,7 +4,7 @@
  * @Author: zhangpeng
  * @Date: 2020-12-19 08:41:10
  * @LastEditors: zhangpeng
- * @LastEditTime: 2020-12-19 09:02:06
+ * @LastEditTime: 2020-12-19 10:08:47
 -->
 ## API服务
 
@@ -67,5 +67,56 @@ app.use(async (ctx) => {
     const res = await query(ctx.query);
     ctx.body = res;
 })
+
+```
+
+
+### 示例
+
+`koa-graphql` 与 `grapgql` 
+
+
+index.js
+```js
+const app = new (require('koa'));
+
+const mount = require('koa-mount');
+const static = require('koa-static');
+const graphqlHttp = require('koa-graphql')
+
+
+app.use(
+    graphqlHttp({
+        schema: require('./schema')
+    })
+)
+app.listen(3000);
+```
+
+schema.js
+```js
+const { graphql, buildSchema } = require('graphql')
+
+const schema = buildSchema(`
+    type Comment {
+        id: Int,
+        name:String
+    }
+
+    type Query {
+        comment:[Comment]
+    }
+`)
+
+schema.getQueryType().getFields().comment.resolve = () => {
+    return [
+        {
+            id:1,
+            name:'大棚'
+        }
+    ]
+}
+
+module.exports = schema;
 
 ```
