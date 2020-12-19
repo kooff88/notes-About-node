@@ -4,7 +4,7 @@
  * @Author: zhangpeng
  * @Date: 2020-12-19 08:41:10
  * @LastEditors: zhangpeng
- * @LastEditTime: 2020-12-19 08:45:15
+ * @LastEditTime: 2020-12-19 09:02:06
 -->
 ## API服务
 
@@ -20,4 +20,52 @@
 
 ### GraphQL
 
+Facebook开发实现的API服务的库，
+
 专注数据聚合，前端需要什么就返回什么数据， 不冗余。
+
+让前端有 “自定义查询” 数据的能力。
+
+
+
+官方示例
+index.js
+```js
+var { graphql, buildSchema } = require('graphql');
+ 
+// Construct a schema, using GraphQL schema language
+var schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
+ 
+// The root provides a resolver function for each API endpoint
+var root = {
+  hello: () => {
+    return 'Hello world!';
+  },
+};
+ 
+
+// 做一层封装
+module.exports = function(query){
+    // Run the GraphQL query '{ hello }' and print out the response
+    return graphql(schema, query, root).then((response) => {
+    // console.log(response);
+        return response;
+    });
+
+}
+```
+
+request.js
+```js
+const query = require('./index.js');
+
+app.use(async (ctx) => {
+    const res = await query(ctx.query);
+    ctx.body = res;
+})
+
+```
